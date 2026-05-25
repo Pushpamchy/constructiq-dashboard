@@ -153,7 +153,8 @@ export default function Home() {
           left: 0,
           bottom: 0,
           transition: '0.4s ease',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          zIndex: 100
         }}
       >
         <div
@@ -248,8 +249,6 @@ export default function Home() {
           {activePage}
         </h1>
 
-        {/* DASHBOARD */}
-
         {activePage ===
           'Dashboard' && (
           <>
@@ -266,14 +265,10 @@ export default function Home() {
           </>
         )}
 
-        {/* PROJECTS */}
-
         {activePage ===
           'Projects' && (
           <ProjectsPage />
         )}
-
-        {/* AI SIGNALS */}
 
         {activePage ===
           'AI Signals' && (
@@ -282,35 +277,25 @@ export default function Home() {
           />
         )}
 
-        {/* FORECASTING */}
-
         {activePage ===
           'Forecasting' && (
           <ForecastPage risk={risk} />
         )}
-
-        {/* DECISION LOGS */}
 
         {activePage ===
           'Decision Logs' && (
           <DecisionPage />
         )}
 
-        {/* REPORTS */}
-
         {activePage ===
           'Reports' && (
           <ReportsPage />
         )}
 
-        {/* RISK MAP */}
-
         {activePage ===
           'Risk Map' && (
           <RiskMapPage />
         )}
-
-        {/* SETTINGS */}
 
         {activePage ===
           'Settings' && (
@@ -321,47 +306,7 @@ export default function Home() {
   );
 }
 
-/* COMPONENTS */
-
-function MetricsGrid({
-  risk,
-  projects,
-  savings
-}) {
-  return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns:
-          'repeat(auto-fit,minmax(250px,1fr))',
-        gap: '20px',
-        marginTop: '30px'
-      }}
-    >
-      <Metric
-        title="Active Projects"
-        value={projects}
-      />
-
-      <Metric
-        title="Portfolio Risk"
-        value={`${risk}%`}
-      />
-
-      <Metric
-        title="Predicted Savings"
-        value={`£${savings}M`}
-      />
-
-      <Metric
-        title="AI Confidence"
-        value={`${Math.floor(
-          risk * 1.2
-        )}%`}
-      />
-    </div>
-  );
-}
+/* DASHBOARD */
 
 function DashboardGrid({
   risk,
@@ -377,134 +322,387 @@ function DashboardGrid({
         marginTop: '30px'
       }}
     >
+      {/* LEFT */}
+
       <div
         style={{
-          background: '#0f1b31',
-          padding: '30px',
-          borderRadius: '24px'
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px'
         }}
       >
-        <h2>Live Risk Engine</h2>
+        {/* RISK ENGINE */}
 
         <div
           style={{
-            marginTop: '30px',
-            height: '22px',
-            background: '#1e293b',
-            borderRadius: '999px',
-            overflow: 'hidden'
+            background: '#0f1b31',
+            padding: '30px',
+            borderRadius: '24px'
           }}
         >
+          <h2>Live Risk Intelligence Engine</h2>
+
           <div
             style={{
-              width: `${risk}%`,
-              height: '100%',
-              background:
-                risk > 75
-                  ? '#ef4444'
-                  : '#f59e0b',
-              transition: '1s ease'
+              marginTop: '35px',
+              height: '22px',
+              background: '#1e293b',
+              borderRadius: '999px',
+              overflow: 'hidden'
             }}
-          />
-        </div>
-
-        <div
-          style={{
-            marginTop: '20px',
-            fontSize: '22px'
-          }}
-        >
-          Current Risk: {risk}%
-        </div>
-
-        <div
-          style={{
-            marginTop: '40px',
-            display: 'flex',
-            alignItems: 'flex-end',
-            gap: '10px',
-            height: '240px'
-          }}
-        >
-          {Array.from({
-            length: 20
-          }).map((_, i) => (
+          >
             <div
-              key={i}
               style={{
-                flex: 1,
-                height:
-                  60 +
-                  Math.random() * 180,
+                width: `${risk}%`,
+                height: '100%',
                 background:
-                  i % 3 === 0
-                    ? '#22d3ee'
-                    : i % 3 === 1
-                    ? '#f59e0b'
-                    : '#ef4444',
-                borderRadius: '10px',
+                  risk > 75
+                    ? '#ef4444'
+                    : '#f59e0b',
                 transition: '1s ease'
               }}
             />
+          </div>
+
+          <div
+            style={{
+              marginTop: '18px',
+              fontSize: '22px',
+              fontWeight: 'bold'
+            }}
+          >
+            Current Portfolio Risk:
+            {' '}
+            {risk}%
+          </div>
+
+          <div
+            style={{
+              marginTop: '40px',
+              display: 'flex',
+              alignItems: 'flex-end',
+              gap: '10px',
+              height: '220px'
+            }}
+          >
+            {Array.from({
+              length: 24
+            }).map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  flex: 1,
+                  height:
+                    50 +
+                    Math.random() * 180,
+                  background:
+                    i % 3 === 0
+                      ? '#22d3ee'
+                      : i % 3 === 1
+                      ? '#f59e0b'
+                      : '#ef4444',
+                  borderRadius: '10px',
+                  transition: '1s ease'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* SUPPLIER GRAPH */}
+
+        <div
+          style={{
+            background: '#0f1b31',
+            padding: '30px',
+            borderRadius: '24px'
+          }}
+        >
+          <h2>
+            Supplier Reliability Index
+          </h2>
+
+          <div
+            style={{
+              marginTop: '40px',
+              display: 'flex',
+              alignItems: 'flex-end',
+              gap: '14px',
+              height: '200px'
+            }}
+          >
+            {Array.from({
+              length: 14
+            }).map((_, i) => {
+              const value =
+                80 +
+                Math.random() * 120;
+
+              return (
+                <div
+                  key={i}
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection:
+                      'column',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '100%',
+                      height: value,
+                      background:
+                        value > 150
+                          ? '#22c55e'
+                          : value > 100
+                          ? '#f59e0b'
+                          : '#ef4444',
+                      borderRadius:
+                        '10px 10px 0 0',
+                      transition:
+                        '1s ease'
+                    }}
+                  />
+
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      color: '#94a3b8',
+                      fontSize: '12px'
+                    }}
+                  >
+                    S{i + 1}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* OPERATIONAL METRICS */}
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns:
+              'repeat(4,1fr)',
+            gap: '16px'
+          }}
+        >
+          {[
+            {
+              label:
+                'Supplier Delays',
+              value: '14'
+            },
+            {
+              label:
+                'Weather Alerts',
+              value: '8'
+            },
+            {
+              label:
+                'Labour Risks',
+              value: '11'
+            },
+            {
+              label:
+                'Budget Drift',
+              value: '£1.2M'
+            }
+          ].map(item => (
+            <div
+              key={item.label}
+              style={{
+                background: '#0f1b31',
+                padding: '24px',
+                borderRadius: '20px'
+              }}
+            >
+              <div
+                style={{
+                  color: '#94a3b8',
+                  fontSize: '13px'
+                }}
+              >
+                {item.label}
+              </div>
+
+              <div
+                style={{
+                  marginTop: '12px',
+                  fontSize: '28px',
+                  fontWeight: 'bold'
+                }}
+              >
+                {item.value}
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
+      {/* RIGHT */}
+
       <div
         style={{
-          background: '#0f1b31',
-          padding: '30px',
-          borderRadius: '24px'
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px'
         }}
       >
-        <h2>AI Alerts</h2>
+        {/* ALERTS */}
 
         <div
-          style={{ marginTop: '30px' }}
+          style={{
+            background: '#0f1b31',
+            padding: '30px',
+            borderRadius: '24px'
+          }}
         >
-          {alerts.map(
-            (alert, index) => (
+          <h2>AI Alerts</h2>
+
+          <div
+            style={{ marginTop: '30px' }}
+          >
+            {alerts.map(
+              (alert, index) => (
+                <div
+                  key={index}
+                  style={{
+                    padding: '18px',
+                    background: '#17263f',
+                    borderRadius:
+                      '16px',
+                    marginBottom: '14px'
+                  }}
+                >
+                  <div
+                    style={{
+                      color:
+                        '#94a3b8',
+                      fontSize:
+                        '12px'
+                    }}
+                  >
+                    {alert.type}
+                  </div>
+
+                  <div
+                    style={{
+                      marginTop:
+                        '8px'
+                    }}
+                  >
+                    {alert.text}
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+
+        {/* PROJECT HEALTH */}
+
+        <div
+          style={{
+            background: '#0f1b31',
+            padding: '30px',
+            borderRadius: '24px'
+          }}
+        >
+          <h2>
+            Project Health Scores
+          </h2>
+
+          <div
+            style={{ marginTop: '25px' }}
+          >
+            {[
+              {
+                name: 'Atlas',
+                score: 81
+              },
+              {
+                name: 'Orion',
+                score: 62
+              },
+              {
+                name: 'Cardiff',
+                score: 44
+              },
+              {
+                name: 'Bristol',
+                score: 72
+              }
+            ].map(project => (
               <div
-                key={index}
+                key={project.name}
                 style={{
-                  padding: '18px',
-                  background: '#17263f',
-                  borderRadius: '16px',
-                  marginBottom: '14px'
+                  marginBottom: '18px'
                 }}
               >
                 <div
                   style={{
-                    color: '#94a3b8',
-                    fontSize: '12px'
+                    display: 'flex',
+                    justifyContent:
+                      'space-between',
+                    marginBottom:
+                      '8px'
                   }}
                 >
-                  {alert.type}
+                  <span>
+                    {project.name}
+                  </span>
+
+                  <span>
+                    {project.score}%
+                  </span>
                 </div>
 
                 <div
                   style={{
-                    marginTop: '8px'
+                    height: '10px',
+                    background:
+                      '#1e293b',
+                    borderRadius:
+                      '999px',
+                    overflow:
+                      'hidden'
                   }}
                 >
-                  {alert.text}
+                  <div
+                    style={{
+                      width: `${project.score}%`,
+                      height: '100%',
+                      background:
+                        project.score >
+                        70
+                          ? '#22c55e'
+                          : project.score >
+                            50
+                          ? '#f59e0b'
+                          : '#ef4444'
+                    }}
+                  />
                 </div>
               </div>
-            )
-          )}
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+/* OTHER PAGES */
+
 function ProjectsPage() {
   return (
     <PageCard title="Projects Overview">
-      Live project monitoring,
-      supplier intelligence,
-      budget tracking and delay
-      forecasting active.
+      Live project monitoring active.
     </PageCard>
   );
 }
@@ -549,8 +747,7 @@ function ForecastPage({
 function DecisionPage() {
   return (
     <PageCard title="Decision Logs">
-      AI approval workflows and
-      governance audit system live.
+      AI governance workflows active.
     </PageCard>
   );
 }
@@ -558,29 +755,29 @@ function DecisionPage() {
 function ReportsPage() {
   return (
     <PageCard title="Reports">
-      Weekly AI-generated reports
-      and predictive summaries.
+      Weekly predictive reporting live.
     </PageCard>
   );
 }
 
 function RiskMapPage() {
   return (
-    <PageCard title="Global Risk Map">
-      Geographic supplier and
-      infrastructure risk engine.
+    <PageCard title="Risk Map">
+      Infrastructure and supply chain
+      intelligence active.
     </PageCard>
   );
 }
 
 function SettingsPage() {
   return (
-    <PageCard title="System Settings">
-      AI sensitivity controls,
-      thresholds and user roles.
+    <PageCard title="Settings">
+      AI sensitivity and thresholds.
     </PageCard>
   );
 }
+
+/* HELPERS */
 
 function PageCard({
   title,
@@ -592,8 +789,7 @@ function PageCard({
         background: '#0f1b31',
         padding: '40px',
         borderRadius: '24px',
-        marginTop: '30px',
-        fontSize: '20px'
+        marginTop: '30px'
       }}
     >
       <h2>{title}</h2>
@@ -606,6 +802,46 @@ function PageCard({
       >
         {children}
       </div>
+    </div>
+  );
+}
+
+function MetricsGrid({
+  risk,
+  projects,
+  savings
+}) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns:
+          'repeat(auto-fit,minmax(250px,1fr))',
+        gap: '20px',
+        marginTop: '30px'
+      }}
+    >
+      <Metric
+        title="Active Projects"
+        value={projects}
+      />
+
+      <Metric
+        title="Portfolio Risk"
+        value={`${risk}%`}
+      />
+
+      <Metric
+        title="Predicted Savings"
+        value={`£${savings}M`}
+      />
+
+      <Metric
+        title="AI Confidence"
+        value={`${Math.floor(
+          risk * 1.2
+        )}%`}
+      />
     </div>
   );
 }
