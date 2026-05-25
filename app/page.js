@@ -3,33 +3,45 @@
 import React, { useEffect, useState } from 'react';
 
 export default function Home() {
-  const [risk, setRisk] = useState(64);
-  const [projects, setProjects] = useState(58);
-  const [savings, setSavings] = useState(8.4);
+  const [activePage, setActivePage] =
+    useState('Dashboard');
 
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] =
+    useState(true);
+
+  const [risk, setRisk] = useState(64);
+
+  const [projects, setProjects] =
+    useState(58);
+
+  const [savings, setSavings] =
+    useState(8.4);
+
+  const [signals, setSignals] = useState([
+    'Weather Risk ↑',
+    'Steel Cost Spike ↑',
+    'Supplier Reliability ↓'
+  ]);
 
   const [alerts, setAlerts] = useState([
     {
       type: 'CRITICAL',
-      text: 'Supplier payment delays detected on Project Atlas.'
+      text: 'Supplier payment delays detected.'
     },
     {
       type: 'WARNING',
-      text: 'Weather disruption probability elevated in South Wales.'
-    },
-    {
-      type: 'AI',
-      text: 'AI predicts 18-day delay risk escalation.'
+      text: 'Weather disruption probability elevated.'
     }
   ]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setRisk(prev => {
-        let next = prev + Math.floor(Math.random() * 9 - 4);
+        let next =
+          prev +
+          Math.floor(Math.random() * 9 - 4);
 
-        if (next < 38) next = 38;
+        if (next < 35) next = 35;
         if (next > 92) next = 92;
 
         return next;
@@ -41,31 +53,60 @@ export default function Home() {
 
       setSavings(prev =>
         Number(
-          (prev + (Math.random() * 0.4 - 0.15)).toFixed(1)
+          (
+            prev +
+            (Math.random() * 0.5 - 0.2)
+          ).toFixed(1)
         )
       );
 
-      const feed = [
-        'Steel price volatility increased 14%.',
-        'Labour shortage threshold exceeded.',
-        'Concrete supplier reliability weakening.',
-        'AI confidence level recalibrated.',
-        'Schedule variance anomaly detected.',
-        'Risk cascade pattern identified.',
-        'Project Orion entered high-risk state.'
+      const newSignals = [
+        'Concrete Delay ↑',
+        'Fuel Price Volatility ↑',
+        'Rainfall Risk ↑',
+        'Labour Availability ↓',
+        'Supply Chain Delay ↑'
       ];
 
-      const types = ['AI', 'WARNING', 'CRITICAL'];
+      setSignals([
+        newSignals[
+          Math.floor(
+            Math.random() *
+              newSignals.length
+          )
+        ],
+        ...signals.slice(0, 4)
+      ]);
+
+      const feed = [
+        'AI predicts schedule variance.',
+        'Budget anomaly identified.',
+        'Project entered high-risk state.',
+        'Cost overrun probability increased.',
+        'Supplier trend weakening.'
+      ];
+
+      const types = [
+        'AI',
+        'WARNING',
+        'CRITICAL'
+      ];
 
       setAlerts(prev => [
         {
           type:
             types[
-              Math.floor(Math.random() * types.length)
+              Math.floor(
+                Math.random() *
+                  types.length
+              )
             ],
           text:
             feed[
-              Math.floor(Math.random() * feed.length)
+              Math.floor(
+                Math.random() *
+                  feed.length
+              )
             ]
         },
         ...prev.slice(0, 4)
@@ -73,30 +114,17 @@ export default function Home() {
     }, 2500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [signals]);
 
-  const projectsData = [
-    {
-      name: 'Project Atlas',
-      budget: '£18.2M',
-      risk: 74,
-      delay: '16 days',
-      status: 'High Risk'
-    },
-    {
-      name: 'Cardiff Central',
-      budget: '£9.1M',
-      risk: 49,
-      delay: '4 days',
-      status: 'Stable'
-    },
-    {
-      name: 'London Smart Rail',
-      budget: '£104M',
-      risk: 82,
-      delay: '28 days',
-      status: 'Critical'
-    }
+  const menuItems = [
+    'Dashboard',
+    'Projects',
+    'AI Signals',
+    'Forecasting',
+    'Decision Logs',
+    'Reports',
+    'Risk Map',
+    'Settings'
   ];
 
   return (
@@ -113,27 +141,28 @@ export default function Home() {
 
       <div
         style={{
-          width: sidebarOpen ? '260px' : '90px',
+          width: sidebarOpen
+            ? '260px'
+            : '90px',
           background: '#0b172b',
-          borderRight: '1px solid #1e293b',
+          borderRight:
+            '1px solid #1e293b',
           padding: '30px 20px',
           position: 'fixed',
           top: 0,
           left: 0,
           bottom: 0,
           transition: '0.4s ease',
-          overflow: 'hidden',
-          zIndex: 100
+          overflow: 'hidden'
         }}
       >
-        {/* TOP */}
-
         <div
           style={{
             display: 'flex',
-            justifyContent: sidebarOpen
-              ? 'space-between'
-              : 'center',
+            justifyContent:
+              sidebarOpen
+                ? 'space-between'
+                : 'center',
             alignItems: 'center',
             marginBottom: '50px'
           }}
@@ -142,8 +171,7 @@ export default function Home() {
             <h1
               style={{
                 fontSize: '32px',
-                margin: 0,
-                fontWeight: '900'
+                margin: 0
               }}
             >
               CQ
@@ -152,7 +180,9 @@ export default function Home() {
 
           <button
             onClick={() =>
-              setSidebarOpen(!sidebarOpen)
+              setSidebarOpen(
+                !sidebarOpen
+              )
             }
             style={{
               background: '#12233f',
@@ -161,54 +191,38 @@ export default function Home() {
               width: '42px',
               height: '42px',
               borderRadius: '12px',
-              cursor: 'pointer',
-              fontSize: '18px'
+              cursor: 'pointer'
             }}
           >
             {sidebarOpen ? '←' : '→'}
           </button>
         </div>
 
-        {/* MENU */}
-
-        {[
-          { icon: '📊', label: 'Dashboard' },
-          { icon: '🏗️', label: 'Projects' },
-          { icon: '🧠', label: 'AI Signals' },
-          { icon: '📈', label: 'Forecasting' },
-          { icon: '📝', label: 'Decision Logs' },
-          { icon: '📄', label: 'Reports' },
-          { icon: '🌍', label: 'Risk Map' },
-          { icon: '⚙️', label: 'Settings' }
-        ].map(item => (
+        {menuItems.map(item => (
           <div
-            key={item.label}
+            key={item}
+            onClick={() =>
+              setActivePage(item)
+            }
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
               padding: '16px',
-              marginBottom: '10px',
+              marginBottom: '12px',
               borderRadius: '14px',
+              cursor: 'pointer',
               background:
-                item.label === 'Dashboard'
+                activePage === item
                   ? '#12233f'
                   : 'transparent',
               color:
-                item.label === 'Dashboard'
+                activePage === item
                   ? '#22d3ee'
                   : '#94a3b8',
-              cursor: 'pointer',
               transition: '0.3s'
             }}
           >
-            <span style={{ fontSize: '20px' }}>
-              {item.icon}
-            </span>
-
-            {sidebarOpen && (
-              <span>{item.label}</span>
-            )}
+            {sidebarOpen
+              ? item
+              : item[0]}
           </div>
         ))}
       </div>
@@ -217,313 +231,389 @@ export default function Home() {
 
       <div
         style={{
-          marginLeft: sidebarOpen ? '260px' : '90px',
+          marginLeft: sidebarOpen
+            ? '260px'
+            : '90px',
           transition: '0.4s ease',
           width: '100%',
           padding: '40px'
         }}
       >
-        {/* HEADER */}
-
-        <div
+        <h1
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
+            fontSize: '52px',
+            marginTop: 0
           }}
         >
-          <div>
-            <div
-              style={{
-                fontSize: '58px',
-                fontWeight: '900'
-              }}
-            >
-              AI RISK COMMAND CENTER
-            </div>
+          {activePage}
+        </h1>
 
-            <div
-              style={{
-                color: '#94a3b8',
-                marginTop: '10px',
-                fontSize: '20px'
-              }}
-            >
-              Predict. Prevent. Deliver.
-            </div>
-          </div>
+        {/* DASHBOARD */}
 
-          <div
-            style={{
-              background: '#111827',
-              padding: '24px',
-              borderRadius: '24px',
-              minWidth: '220px',
-              boxShadow:
-                '0 0 30px rgba(34,211,238,0.1)'
-            }}
-          >
-            <div style={{ color: '#94a3b8' }}>
-              System Status
-            </div>
+        {activePage ===
+          'Dashboard' && (
+          <>
+            <MetricsGrid
+              risk={risk}
+              projects={projects}
+              savings={savings}
+            />
 
-            <div
-              style={{
-                marginTop: '12px',
-                color: '#22c55e',
-                fontWeight: 'bold',
-                fontSize: '28px'
-              }}
-            >
-              ● LIVE
-            </div>
-          </div>
-        </div>
+            <DashboardGrid
+              risk={risk}
+              alerts={alerts}
+            />
+          </>
+        )}
 
-        {/* METRICS */}
+        {/* PROJECTS */}
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns:
-              'repeat(auto-fit,minmax(260px,1fr))',
-            gap: '20px',
-            marginTop: '40px'
-          }}
-        >
-          <Metric
-            title="Active Projects"
-            value={projects}
+        {activePage ===
+          'Projects' && (
+          <ProjectsPage />
+        )}
+
+        {/* AI SIGNALS */}
+
+        {activePage ===
+          'AI Signals' && (
+          <SignalsPage
+            signals={signals}
           />
+        )}
 
-          <Metric
-            title="Portfolio Risk"
-            value={`${risk}%`}
-          />
+        {/* FORECASTING */}
 
-          <Metric
-            title="Predicted Savings"
-            value={`£${savings}M`}
-          />
+        {activePage ===
+          'Forecasting' && (
+          <ForecastPage risk={risk} />
+        )}
 
-          <Metric
-            title="AI Confidence"
-            value={`${Math.floor(risk * 1.2)}%`}
-          />
-        </div>
+        {/* DECISION LOGS */}
 
-        {/* MAIN GRID */}
+        {activePage ===
+          'Decision Logs' && (
+          <DecisionPage />
+        )}
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
-            gap: '20px',
-            marginTop: '30px'
-          }}
-        >
-          {/* RISK ENGINE */}
+        {/* REPORTS */}
 
-          <div
-            style={{
-              background: '#0f1b31',
-              borderRadius: '30px',
-              padding: '30px'
-            }}
-          >
-            <h2>Live Risk Intelligence Engine</h2>
+        {activePage ===
+          'Reports' && (
+          <ReportsPage />
+        )}
 
-            <div
-              style={{
-                marginTop: '35px',
-                height: '24px',
-                background: '#1e293b',
-                borderRadius: '999px',
-                overflow: 'hidden'
-              }}
-            >
-              <div
-                style={{
-                  width: `${risk}%`,
-                  height: '100%',
-                  background:
-                    risk > 75
-                      ? '#ef4444'
-                      : risk > 55
-                      ? '#f59e0b'
-                      : '#22c55e',
-                  transition: '1s ease'
-                }}
-              />
-            </div>
+        {/* RISK MAP */}
 
-            <div
-              style={{
-                marginTop: '16px',
-                fontSize: '24px',
-                fontWeight: 'bold'
-              }}
-            >
-              Portfolio Risk Level: {risk}%
-            </div>
+        {activePage ===
+          'Risk Map' && (
+          <RiskMapPage />
+        )}
 
-            {/* LIVE BARS */}
+        {/* SETTINGS */}
 
-            <div
-              style={{
-                marginTop: '50px',
-                display: 'flex',
-                alignItems: 'flex-end',
-                gap: '10px',
-                height: '260px'
-              }}
-            >
-              {Array.from({ length: 24 }).map((_, i) => {
-                const h = 60 + Math.random() * 180;
+        {activePage ===
+          'Settings' && (
+          <SettingsPage />
+        )}
+      </div>
+    </div>
+  );
+}
 
-                return (
-                  <div
-                    key={i}
-                    style={{
-                      flex: 1,
-                      borderRadius: '10px',
-                      height: h,
-                      background:
-                        i % 3 === 0
-                          ? '#22d3ee'
-                          : i % 3 === 1
-                          ? '#f59e0b'
-                          : '#ef4444',
-                      transition: '1s ease'
-                    }}
-                  />
-                );
-              })}
-            </div>
-          </div>
+/* COMPONENTS */
 
-          {/* ALERT FEED */}
+function MetricsGrid({
+  risk,
+  projects,
+  savings
+}) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns:
+          'repeat(auto-fit,minmax(250px,1fr))',
+        gap: '20px',
+        marginTop: '30px'
+      }}
+    >
+      <Metric
+        title="Active Projects"
+        value={projects}
+      />
 
-          <div
-            style={{
-              background: '#0f1b31',
-              borderRadius: '30px',
-              padding: '30px'
-            }}
-          >
-            <h2>AI Signal Feed</h2>
+      <Metric
+        title="Portfolio Risk"
+        value={`${risk}%`}
+      />
 
-            <div style={{ marginTop: '30px' }}>
-              {alerts.map((alert, index) => (
-                <div
-                  key={index}
-                  style={{
-                    padding: '18px',
-                    borderRadius: '18px',
-                    marginBottom: '16px',
-                    background: '#17263f',
-                    borderLeft:
-                      alert.type === 'CRITICAL'
-                        ? '4px solid #ef4444'
-                        : alert.type === 'WARNING'
-                        ? '4px solid #f59e0b'
-                        : '4px solid #22d3ee'
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: '12px',
-                      marginBottom: '8px',
-                      color: '#94a3b8'
-                    }}
-                  >
-                    {alert.type}
-                  </div>
+      <Metric
+        title="Predicted Savings"
+        value={`£${savings}M`}
+      />
 
-                  <div>{alert.text}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+      <Metric
+        title="AI Confidence"
+        value={`${Math.floor(
+          risk * 1.2
+        )}%`}
+      />
+    </div>
+  );
+}
 
-        {/* PROJECT TABLE */}
+function DashboardGrid({
+  risk,
+  alerts
+}) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns:
+          '2fr 1fr',
+        gap: '20px',
+        marginTop: '30px'
+      }}
+    >
+      <div
+        style={{
+          background: '#0f1b31',
+          padding: '30px',
+          borderRadius: '24px'
+        }}
+      >
+        <h2>Live Risk Engine</h2>
 
         <div
           style={{
             marginTop: '30px',
-            background: '#0f1b31',
-            borderRadius: '30px',
-            padding: '30px'
+            height: '22px',
+            background: '#1e293b',
+            borderRadius: '999px',
+            overflow: 'hidden'
           }}
         >
-          <h2>Active Project Monitoring</h2>
-
-          <table
+          <div
             style={{
-              width: '100%',
-              marginTop: '30px',
-              borderCollapse: 'collapse'
+              width: `${risk}%`,
+              height: '100%',
+              background:
+                risk > 75
+                  ? '#ef4444'
+                  : '#f59e0b',
+              transition: '1s ease'
             }}
-          >
-            <thead>
-              <tr style={{ color: '#94a3b8' }}>
-                <th align="left">Project</th>
-                <th align="left">Budget</th>
-                <th align="left">Risk</th>
-                <th align="left">Delay Forecast</th>
-                <th align="left">Status</th>
-              </tr>
-            </thead>
+          />
+        </div>
 
-            <tbody>
-              {projectsData.map((p, i) => (
-                <tr
-                  key={i}
+        <div
+          style={{
+            marginTop: '20px',
+            fontSize: '22px'
+          }}
+        >
+          Current Risk: {risk}%
+        </div>
+
+        <div
+          style={{
+            marginTop: '40px',
+            display: 'flex',
+            alignItems: 'flex-end',
+            gap: '10px',
+            height: '240px'
+          }}
+        >
+          {Array.from({
+            length: 20
+          }).map((_, i) => (
+            <div
+              key={i}
+              style={{
+                flex: 1,
+                height:
+                  60 +
+                  Math.random() * 180,
+                background:
+                  i % 3 === 0
+                    ? '#22d3ee'
+                    : i % 3 === 1
+                    ? '#f59e0b'
+                    : '#ef4444',
+                borderRadius: '10px',
+                transition: '1s ease'
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div
+        style={{
+          background: '#0f1b31',
+          padding: '30px',
+          borderRadius: '24px'
+        }}
+      >
+        <h2>AI Alerts</h2>
+
+        <div
+          style={{ marginTop: '30px' }}
+        >
+          {alerts.map(
+            (alert, index) => (
+              <div
+                key={index}
+                style={{
+                  padding: '18px',
+                  background: '#17263f',
+                  borderRadius: '16px',
+                  marginBottom: '14px'
+                }}
+              >
+                <div
                   style={{
-                    borderTop:
-                      '1px solid #1e293b',
-                    height: '70px'
+                    color: '#94a3b8',
+                    fontSize: '12px'
                   }}
                 >
-                  <td>{p.name}</td>
-                  <td>{p.budget}</td>
-                  <td>{p.risk}%</td>
-                  <td>{p.delay}</td>
+                  {alert.type}
+                </div>
 
-                  <td>
-                    <span
-                      style={{
-                        padding: '8px 14px',
-                        borderRadius: '999px',
-                        background:
-                          p.risk > 75
-                            ? '#3b0d0d'
-                            : p.risk > 55
-                            ? '#3d2c09'
-                            : '#0f3b22',
-                        color:
-                          p.risk > 75
-                            ? '#ef4444'
-                            : p.risk > 55
-                            ? '#f59e0b'
-                            : '#22c55e'
-                      }}
-                    >
-                      {p.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                <div
+                  style={{
+                    marginTop: '8px'
+                  }}
+                >
+                  {alert.text}
+                </div>
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-function Metric({ title, value }) {
+function ProjectsPage() {
+  return (
+    <PageCard title="Projects Overview">
+      Live project monitoring,
+      supplier intelligence,
+      budget tracking and delay
+      forecasting active.
+    </PageCard>
+  );
+}
+
+function SignalsPage({
+  signals
+}) {
+  return (
+    <div
+      style={{
+        marginTop: '30px'
+      }}
+    >
+      {signals.map((signal, i) => (
+        <div
+          key={i}
+          style={{
+            background: '#0f1b31',
+            padding: '24px',
+            borderRadius: '20px',
+            marginBottom: '16px'
+          }}
+        >
+          {signal}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ForecastPage({
+  risk
+}) {
+  return (
+    <PageCard title="AI Forecasting">
+      Predicted portfolio exposure:
+      £{(risk * 120000).toLocaleString()}
+    </PageCard>
+  );
+}
+
+function DecisionPage() {
+  return (
+    <PageCard title="Decision Logs">
+      AI approval workflows and
+      governance audit system live.
+    </PageCard>
+  );
+}
+
+function ReportsPage() {
+  return (
+    <PageCard title="Reports">
+      Weekly AI-generated reports
+      and predictive summaries.
+    </PageCard>
+  );
+}
+
+function RiskMapPage() {
+  return (
+    <PageCard title="Global Risk Map">
+      Geographic supplier and
+      infrastructure risk engine.
+    </PageCard>
+  );
+}
+
+function SettingsPage() {
+  return (
+    <PageCard title="System Settings">
+      AI sensitivity controls,
+      thresholds and user roles.
+    </PageCard>
+  );
+}
+
+function PageCard({
+  title,
+  children
+}) {
+  return (
+    <div
+      style={{
+        background: '#0f1b31',
+        padding: '40px',
+        borderRadius: '24px',
+        marginTop: '30px',
+        fontSize: '20px'
+      }}
+    >
+      <h2>{title}</h2>
+
+      <div
+        style={{
+          marginTop: '20px',
+          color: '#94a3b8'
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function Metric({
+  title,
+  value
+}) {
   return (
     <div
       style={{
@@ -534,8 +624,7 @@ function Metric({ title, value }) {
     >
       <div
         style={{
-          color: '#94a3b8',
-          fontSize: '15px'
+          color: '#94a3b8'
         }}
       >
         {title}
