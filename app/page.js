@@ -6,6 +6,9 @@ export default function Home() {
   const [risk, setRisk] = useState(64);
   const [projects, setProjects] = useState(58);
   const [savings, setSavings] = useState(8.4);
+
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   const [alerts, setAlerts] = useState([
     {
       type: 'CRITICAL',
@@ -25,15 +28,21 @@ export default function Home() {
     const interval = setInterval(() => {
       setRisk(prev => {
         let next = prev + Math.floor(Math.random() * 9 - 4);
+
         if (next < 38) next = 38;
         if (next > 92) next = 92;
+
         return next;
       });
 
-      setProjects(prev => prev + (Math.random() > 0.8 ? 1 : 0));
+      setProjects(prev =>
+        prev + (Math.random() > 0.8 ? 1 : 0)
+      );
 
       setSavings(prev =>
-        Number((prev + (Math.random() * 0.4 - 0.15)).toFixed(1))
+        Number(
+          (prev + (Math.random() * 0.4 - 0.15)).toFixed(1)
+        )
       );
 
       const feed = [
@@ -50,8 +59,14 @@ export default function Home() {
 
       setAlerts(prev => [
         {
-          type: types[Math.floor(Math.random() * types.length)],
-          text: feed[Math.floor(Math.random() * feed.length)]
+          type:
+            types[
+              Math.floor(Math.random() * types.length)
+            ],
+          text:
+            feed[
+              Math.floor(Math.random() * feed.length)
+            ]
         },
         ...prev.slice(0, 4)
       ]);
@@ -98,55 +113,102 @@ export default function Home() {
 
       <div
         style={{
-          width: '260px',
+          width: sidebarOpen ? '260px' : '90px',
           background: '#0b172b',
           borderRight: '1px solid #1e293b',
-          padding: '30px',
+          padding: '30px 20px',
           position: 'fixed',
           top: 0,
           left: 0,
-          bottom: 0
+          bottom: 0,
+          transition: '0.4s ease',
+          overflow: 'hidden',
+          zIndex: 100
         }}
       >
-        <h1
+        {/* TOP */}
+
+        <div
           style={{
-            fontSize: '34px',
-            marginBottom: '50px',
-            fontWeight: '900'
+            display: 'flex',
+            justifyContent: sidebarOpen
+              ? 'space-between'
+              : 'center',
+            alignItems: 'center',
+            marginBottom: '50px'
           }}
         >
-          CONSTRUCTIQ
-        </h1>
+          {sidebarOpen && (
+            <h1
+              style={{
+                fontSize: '32px',
+                margin: 0,
+                fontWeight: '900'
+              }}
+            >
+              CQ
+            </h1>
+          )}
+
+          <button
+            onClick={() =>
+              setSidebarOpen(!sidebarOpen)
+            }
+            style={{
+              background: '#12233f',
+              border: 'none',
+              color: 'white',
+              width: '42px',
+              height: '42px',
+              borderRadius: '12px',
+              cursor: 'pointer',
+              fontSize: '18px'
+            }}
+          >
+            {sidebarOpen ? '←' : '→'}
+          </button>
+        </div>
+
+        {/* MENU */}
 
         {[
-          'Dashboard',
-          'Projects',
-          'AI Signals',
-          'Forecasting',
-          'Decision Logs',
-          'Reports',
-          'Risk Map',
-          'Settings'
+          { icon: '📊', label: 'Dashboard' },
+          { icon: '🏗️', label: 'Projects' },
+          { icon: '🧠', label: 'AI Signals' },
+          { icon: '📈', label: 'Forecasting' },
+          { icon: '📝', label: 'Decision Logs' },
+          { icon: '📄', label: 'Reports' },
+          { icon: '🌍', label: 'Risk Map' },
+          { icon: '⚙️', label: 'Settings' }
         ].map(item => (
           <div
-            key={item}
+            key={item.label}
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
               padding: '16px',
               marginBottom: '10px',
               borderRadius: '14px',
               background:
-                item === 'Dashboard'
+                item.label === 'Dashboard'
                   ? '#12233f'
                   : 'transparent',
               color:
-                item === 'Dashboard'
+                item.label === 'Dashboard'
                   ? '#22d3ee'
                   : '#94a3b8',
               cursor: 'pointer',
               transition: '0.3s'
             }}
           >
-            {item}
+            <span style={{ fontSize: '20px' }}>
+              {item.icon}
+            </span>
+
+            {sidebarOpen && (
+              <span>{item.label}</span>
+            )}
           </div>
         ))}
       </div>
@@ -155,12 +217,13 @@ export default function Home() {
 
       <div
         style={{
-          marginLeft: '260px',
+          marginLeft: sidebarOpen ? '260px' : '90px',
+          transition: '0.4s ease',
           width: '100%',
           padding: '40px'
         }}
       >
-        {/* TOP */}
+        {/* HEADER */}
 
         <div
           style={{
@@ -196,7 +259,8 @@ export default function Home() {
               padding: '24px',
               borderRadius: '24px',
               minWidth: '220px',
-              boxShadow: '0 0 30px rgba(34,211,238,0.1)'
+              boxShadow:
+                '0 0 30px rgba(34,211,238,0.1)'
             }}
           >
             <div style={{ color: '#94a3b8' }}>
@@ -216,7 +280,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* KPI */}
+        {/* METRICS */}
 
         <div
           style={{
@@ -248,7 +312,7 @@ export default function Home() {
           />
         </div>
 
-        {/* GRID */}
+        {/* MAIN GRID */}
 
         <div
           style={{
@@ -264,13 +328,10 @@ export default function Home() {
             style={{
               background: '#0f1b31',
               borderRadius: '30px',
-              padding: '30px',
-              boxShadow: '0 0 40px rgba(0,0,0,0.3)'
+              padding: '30px'
             }}
           >
-            <h2 style={{ marginTop: 0 }}>
-              Live Risk Intelligence Engine
-            </h2>
+            <h2>Live Risk Intelligence Engine</h2>
 
             <div
               style={{
@@ -306,7 +367,7 @@ export default function Home() {
               Portfolio Risk Level: {risk}%
             </div>
 
-            {/* LIVE GRAPH */}
+            {/* LIVE BARS */}
 
             <div
               style={{
@@ -333,9 +394,7 @@ export default function Home() {
                           : i % 3 === 1
                           ? '#f59e0b'
                           : '#ef4444',
-                      transition: '1s ease',
-                      boxShadow:
-                        '0 0 20px rgba(255,255,255,0.08)'
+                      transition: '1s ease'
                     }}
                   />
                 );
@@ -343,7 +402,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ALERTS */}
+          {/* ALERT FEED */}
 
           <div
             style={{
@@ -352,9 +411,7 @@ export default function Home() {
               padding: '30px'
             }}
           >
-            <h2 style={{ marginTop: 0 }}>
-              AI Signal Feed
-            </h2>
+            <h2>AI Signal Feed</h2>
 
             <div style={{ marginTop: '30px' }}>
               {alerts.map((alert, index) => (
@@ -400,9 +457,7 @@ export default function Home() {
             padding: '30px'
           }}
         >
-          <h2 style={{ marginTop: 0 }}>
-            Active Project Monitoring
-          </h2>
+          <h2>Active Project Monitoring</h2>
 
           <table
             style={{
@@ -426,7 +481,8 @@ export default function Home() {
                 <tr
                   key={i}
                   style={{
-                    borderTop: '1px solid #1e293b',
+                    borderTop:
+                      '1px solid #1e293b',
                     height: '70px'
                   }}
                 >
@@ -434,6 +490,7 @@ export default function Home() {
                   <td>{p.budget}</td>
                   <td>{p.risk}%</td>
                   <td>{p.delay}</td>
+
                   <td>
                     <span
                       style={{
@@ -472,8 +529,7 @@ function Metric({ title, value }) {
       style={{
         background: '#0f1b31',
         padding: '28px',
-        borderRadius: '24px',
-        boxShadow: '0 0 20px rgba(0,0,0,0.3)'
+        borderRadius: '24px'
       }}
     >
       <div
